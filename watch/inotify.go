@@ -97,7 +97,9 @@ func (fw *InotifyFileWatcher) ChangeEvents(t *tomb.Tomb, pos int64) (*FileChange
 
 			switch {
 			case evt.Op&fsnotify.Remove == fsnotify.Remove:
-				fallthrough
+				RemoveWatch(fw.Filename)
+				changes.NotifyDeleted()
+				return
 
 			case evt.Op&fsnotify.Rename == fsnotify.Rename:
 				RemoveWatch(fw.Filename)
